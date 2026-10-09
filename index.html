@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>empieza ya¡¡ - Guía de Arte Digital & Krita Studio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#121214',
+                        darkcard: '#1a1a1e',
+                        darkcard2: '#24242c',
+                        turqDark: '#005f73',
+                        turqMid: '#028090',
+                        turqBright: '#00a896',
+                        turqLight: '#05c7b2',
+                        grungeYellow: '#e9d8a6',
+                        grungeRed: '#ee9b00',
+                        hyenaSkin: '#8ba168',
+                        hyenaEar: '#4a3328'
+                    },
+                    fontFamily: {
+                        mono: ['Courier New', 'Courier', 'monospace'],
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        grunge: ['Impact', 'Arial Black', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'brutal': '4px 4px 0px #00a896',
+                        'brutal-lg': '6px 6px 0px #005f73',
+                        'brutal-dark': '4px 4px 0px #000000',
+                        'brutal-glow': '0px 0px 15px rgba(0, 168, 150, 0.4)'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            background-color: #121214;
+            color: #e2e8f0;
+            background-image: radial-gradient(rgba(2, 128, 144, 0.12) 1px, transparent 0);
+            background-size: 24px 24px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121214;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #028090;
+            border-radius: 0px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00a896;
+        }
+
+        /* Neubrutalism Utilities */
+        .brutal-border {
+            border: 2px solid #00a896;
+        }
+        .brutal-card {
+            background-color: #1a1a1e;
+            border: 2px solid #028090;
+            box-shadow: 4px 4px 0px #005f73;
+            transition: all 0.15s ease-in-out;
+        }
+        .brutal-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #00a896;
+        }
+        .brutal-btn {
+            background-color: #028090;
+            color: #ffffff;
+            border: 2px solid #00a896;
+            box-shadow: 3px 3px 0px #000000;
+            font-weight: bold;
+            transition: all 0.1s ease;
+            user-select: none;
+        }
+        .brutal-btn:hover {
+            background-color: #00a896;
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px #000;
+        }
+        .brutal-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px #000;
+        }
+
+        /* Hyena Floating Animations */
+        @keyframes hyenaBob {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(1.5deg); }
+        }
+        .animate-hyena {
+            animation: hyenaBob 3.5s ease-in-out infinite;
+        }
+        @keyframes eyeGlow {
+            0%, 100% { filter: drop-shadow(0 0 2px #ffeb3b); }
+            50% { filter: drop-shadow(0 0 8px #ffee55); }
+        }
+        .glow-eyes {
+            animation: eyeGlow 2s ease-in-out infinite;
+        }
+
+        /* Section HUD Active State */
+        .hud-link.active {
+            background-color: #00a896;
+            color: #000000;
+            font-weight: bold;
+            border-left: 4px solid #ffffff;
+            padding-left: 12px;
+        }
+
+        /* Canvas cursor */
+        #drawingCanvas {
+            cursor: crosshair;
+            touch-action: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-start pb-20 relative selection:bg-turqBright selection:text-black">
+
+    <!-- Top Bar with Header Title & Multi-Language Translator -->
+    <header class="w-full bg-darkcard border-b-2 border-turqMid sticky top-0 z-40 shadow-brutal-dark">
+        <div class="max-w-[920px] mx-auto px-4 py-3 flex items-center justify-between">
+            <!-- Header Title with Hyena Logo -->
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 relative flex-shrink-0 cursor-pointer hover:scale-105 transition-transform" id="headerLogo" title="¡Soy la hiena artista!">
+                    <!-- Hyena Mascot SVG Component embedded -->
+                    <svg viewBox="0 0 200 240" class="w-full h-full drop-shadow">
+                        <!-- Ears -->
+                        <path d="M 40 90 C 20 50, 10 10, 65 30 C 60 60, 50 80, 55 95 Z" fill="#4a3328" stroke="#121214" stroke-width="4"/>
+                        <path d="M 48 80 C 35 55, 25 25, 58 38 Z" fill="#2d1c14"/>
+                        <path d="M 160 90 C 180 50, 190 10, 135 30 C 140 60, 150 80, 145 95 Z" fill="#4a3328" stroke="#121214" stroke-width="4"/>
+                        <path d="M 152 80 C 165 55, 175 25, 142 38 Z" fill="#2d1c14"/>
+                        <!-- Head / Neck Body -->
+                        <path d="M 45 95 C 45 140, 50 220, 50 240 L 150 240 C 150 220, 155 140, 155 95 C 130 85, 70 85, 45 95 Z" fill="#8ba168" stroke="#121214" stroke-width="5"/>
+                        <!-- Fur Texture Lines -->
+                        <path d="M 60 140 L 63 160 M 70 180 L 72 205 M 135 150 L 133 170 M 140 190 L 138 215" stroke="#687a4a" stroke-width="3" stroke-linecap="round"/>
+                        <!-- Painter Beret (Turquoise Gorrito) -->
+                        <path d="M 50 78 C 50 42, 150 42, 150 78 C 120 92, 80 92, 50 78 Z" fill="#005f73" stroke="#121214" stroke-width="4"/>
+                        <path d="M 96 44 C 95 35, 105 35, 104 44 Z" fill="#005f73" stroke="#121214" stroke-width="3"/>
+                        <!-- Paint Splatters on Beret -->
+                        <circle cx="75" cy="65" r="5" fill="#ee9b00"/>
+                        <circle cx="120" cy="60" r="4" fill="#00a896"/>
+                        <circle cx="138" cy="70" r="3" fill="#e9d8a6"/>
+                        <circle cx="95" cy="72" r="4.5" fill="#e63946"/>
+                        <!-- Dots floating above head -->
+                        <circle cx="90" cy="22" r="2.5" fill="#121214"/>
+                        <circle cx="100" cy="12" r="3" fill="#121214"/>
+                        <circle cx="112" cy="20" r="2" fill="#121214"/>
+                        <!-- Glowing Yellow Eyes -->
+                        <circle cx="75" cy="115" r="11" fill="#ffeb3b" stroke="#121214" stroke-width="3" class="glow-eyes"/>
+                        <circle cx="125" cy="115" r="11" fill="#ffeb3b" stroke="#121214" stroke-width="3" class="glow-eyes"/>
+                        <!-- Muzzle / Snout -->
+                        <path d="M 50 120 C 70 100, 130 100, 150 120 C 155 145, 45 145, 50 120 Z" fill="#2d221e" stroke="#121214" stroke-width="4"/>
+                        <!-- Shiny Nose Highlight -->
+                        <ellipse cx="100" cy="118" rx="10" ry="6" fill="#121214"/>
+                        <ellipse cx="98" cy="116" rx="3" ry="1.8" fill="#ffffff" opacity="0.8"/>
+                        <!-- Tongue hanging out -->
+                        <path d="M 115 138 C 115 180, 145 180, 140 138 Z" fill="#e63946" stroke="#121214" stroke-width="3"/>
+                        <path d="M 128 142 L 128 168" stroke="#b71c1c" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="font-grunge text-2xl sm:text-3xl text-turqBright tracking-wider uppercase drop-shadow" id="ui-main-title">
+                        empieza ya¡¡
+                    </h1>
+                    <p class="text-xs text-gray-400 font-mono tracking-tight" id="ui-subtitle">
+                        &gt; GUÍA DIGITAL & SOFTWARE LIBRE KRITA
+                    </p>
+                </div>
+            </div>
+
+            <!-- Language Selector Dropdown -->
+            <div class="flex items-center gap-2 bg-darkcard2 border border-turqMid p-1.5 rounded shadow-sm">
+                <i class="fa-solid fa-language text-turqBright text-lg px-1"></i>
+                <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-darkcard text-xs text-turqBright font-mono font-bold outline-none cursor-pointer p-1 rounded">
+                    <option value="es">ES - Español</option>
+                    <option value="en">EN - English</option>
+                    <option value="ja">JA - 日本語</option>
+                    <option value="fr">FR - Français</option>
+                    <option value="pt">PT - Português</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container with Compact High-Density Grid (max-w ~920px) -->
+    <div class="w-full max-w-[920px] px-3 sm:px-6 mt-6 flex flex-col md:flex-row gap-6 relative">
+        
+        <!-- Side HUD Menu (Sticky Navigation) -->
+        <aside class="w-full md:w-48 flex-shrink-0">
+            <div class="sticky top-20 bg-darkcard brutal-border p-3 rounded shadow-brutal flex flex-col gap-2">
+                <div class="text-[10px] text-turqBright uppercase tracking-widest font-bold pb-1 border-b border-gray-800 flex items-center justify-between">
+                    <span>// NAV_HUD</span>
+                    <i class="fa-solid fa-terminal text-xs"></i>
+                </div>
+                <nav class="flex flex-row md:flex-col flex-wrap gap-1 text-xs">
+                    <a href="#sec-inicio" id="nav-inicio" class="hud-link p-2 rounded transition-all hover:bg-turqDark flex items-center gap-2">
+                        <span class="text-gray-500 font-bold">[01]</span> <span data-i18n="nav_start">INICIO</span>
+                    </a>
+                    <a href="#sec-lienzo" id="nav-lienzo" class="hud-link p-2 rounded transition-all hover:bg-turqDark flex items-center gap-2">
+                        <span class="text-gray-500 font-bold">[02]</span> <span data-i18n="nav_canvas">LIENZO</span>
+                    </a>
+                    <a href="#sec-marcos" id="nav-marcos" class="hud-link p-2 rounded transition-all hover:bg-turqDark flex items-center gap-2">
+                        <span class="text-gray-500 font-bold">[03]</span> <span data-i18n="nav_frames">MARCOS</span>
+                    </a>
+                    <a href="#sec-diagnostico" id="nav-diagnostico" class="hud-link p-2 rounded transition-all hover:bg-turqDark flex items-center gap-2">
+                        <span class="text-gray-500 font-bold">[04]</span> <span data-i18n="nav_quiz">DIAGNÓSTICO</span>
+                    </a>
+                    <a href="#sec-comparativa" id="nav-comparativa" class="hud-link p-2 rounded transition-all hover:bg-turqDark flex items-center gap-2">
+                        <span class="text-gray-500 font-bold">[05]</span> <span data-i18n="nav_compare">COMPARATIVA</span>
+                    </a>
+                </nav>
+
+                <!-- Mascot Quick Tip Box in HUD -->
+                <div class="hidden md:block mt-3 pt-3 border-t border-gray-800 text-[11px] text-gray-300 bg-darkcard2 p-2 rounded relative">
+                    <div class="text-turqBright font-bold flex items-center gap-1 mb-1">
+                        <i class="fa-solid fa-palette"></i> <span data-i18n="hud_tip_title">CONSEJO HIENA</span>
+                    </div>
+                    <p id="hudTipText" class="italic text-[10px] text-gray-400">"¡Usa la boina bien puesta antes de apretar CTRL+Z 500 veces!"</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Content Sections Container -->
+        <main class="flex-grow space-y-12">
+
+            <!-- SECTION 01: INICIO -->
+            <section id="sec-inicio" class="brutal-card p-5 sm:p-6 rounded relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-paint-brush text-9xl text-turqBright"></i>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b-2 border-turqMid pb-3 mb-4 gap-3">
+                    <div>
+                        <span class="text-xs text-turqBright font-bold uppercase tracking-wider">// SECTION_01</span>
+                        <h2 class="text-3xl font-grunge text-white tracking-wide" data-i18n="sec1_title">empieza ya¡¡ - MANIFIESTO ARTÍSTICO</h2>
+                    </div>
+                    <span class="bg-turqDark text-white text-xs px-2.5 py-1 rounded font-bold border border-turqBright">v2026.1</span>
+                </div>
+
+                <!-- Mascot Presentation Banner -->
+                <div class="flex flex-col sm:flex-row gap-4 items-center bg-darkcard2 p-4 rounded border border-turqMid mb-5">
+                    <!-- Mascot SVG -->
+                    <div class="w-24 h-28 flex-shrink-0 animate-hyena">
+                        <svg viewBox="0 0 200 240" class="w-full h-full filter drop-shadow-md">
+                            <path d="M 40 90 C 20 50, 10 10, 65 30 C 60 60, 50 80, 55 95 Z" fill="#4a3328" stroke="#121214" stroke-width="4"/>
+                            <path d="M 160 90 C 180 50, 190 10, 135 30 C 140 60, 150 80, 145 95 Z" fill="#4a3328" stroke="#121214" stroke-width="4"/>
+                            <path d="M 45 95 C 45 140, 50 220, 50 240 L 150 240 C 150 220, 155 140, 155 95 C 130 85, 70 85, 45 95 Z" fill="#8ba168" stroke="#121214" stroke-width="5"/>
+                            <path d="M 50 78 C 50 42, 150 42, 150 78 C 120 92, 80 92, 50 78 Z" fill="#005f73" stroke="#121214" stroke-width="4"/>
+                            <circle cx="75" cy="65" r="5" fill="#ee9b00"/>
+                            <circle cx="120" cy="60" r="4" fill="#00a896"/>
+                            <circle cx="138" cy="70" r="3" fill="#e9d8a6"/>
+                            <circle cx="95" cy="72" r="4.5" fill="#e63946"/>
+                            <circle cx="75" cy="115" r="11" fill="#ffeb3b" stroke="#121214" stroke-width="3" class="glow-eyes"/>
+                            <circle cx="125" cy="115" r="11" fill="#ffeb3b" stroke="#121214" stroke-width="3" class="glow-eyes"/>
+                            <path d="M 50 120 C 70 100, 130 100, 150 120 C 155 145, 45 145, 50 120 Z" fill="#2d221e" stroke="#121214" stroke-width="4"/>
+                            <path d="M 115 138 C 115 180, 145 180, 140 138 Z" fill="#e63946" stroke="#121214" stroke-width="3"/>
+                        </svg>
+                    </div>
+                    <div class="space-y-2 text-xs leading-relaxed">
+                        <div class="text-turqBright font-bold text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-paw"></i> <span data-i18n="sec1_mascot_intro">¡Hola! Soy Barnaby, la Hiena Pintora Tonta y Tierna</span>
+                        </div>
+                        <p class="text-gray-300" data-i18n="sec1_mascot_desc">
+                            No necesitas una tableta gráfica de 1000 dólares ni un título universitario para crear arte asombroso. El arte digital libre te permite equivocarte sin gastar papel, experimentar con capas infinitas y encontrar tu propio estilo con Krita y herramientas abiertas.
+                        </p>
+                        <div class="flex gap-2 pt-1">
+                            <span class="bg-darkcard px-2 py-0.5 rounded text-turqBright text-[10px] border border-turqDark">#CyberGrunge</span>
+                            <span class="bg-darkcard px-2 py-0.5 rounded text-turqBright text-[10px] border border-turqDark">#KritaOpenSource</span>
+                            <span class="bg-darkcard px-2 py-0.5 rounded text-turqBright text-[10px] border border-turqDark">#SinExcusas</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                    <div class="p-3 bg-darkcard2 rounded border border-gray-800">
+                        <div class="text-turqBright font-bold mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-feather"></i> <span data-i18n="card1_title">1. Libertad de Pincel</span>
+                        </div>
+                        <p class="text-gray-400" data-i18n="card1_desc">Aprende los motores de pinceles dinámicos, estabilizadores y texturas únicas de Krita.</p>
+                    </div>
+                    <div class="p-3 bg-darkcard2 rounded border border-gray-800">
+                        <div class="text-turqBright font-bold mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-layer-group"></i> <span data-i18n="card2_title">2. Flujo de Capas</span>
+                        </div>
+                        <p class="text-gray-400" data-i18n="card2_desc">Domina modos de fusión, máscaras de recorte y filtros no destructivos.</p>
+                    </div>
+                    <div class="p-3 bg-darkcard2 rounded border border-gray-800">
+                        <div class="text-turqBright font-bold mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-download"></i> <span data-i18n="card3_title">3. 100% Gratuito</span>
+                        </div>
+                        <p class="text-gray-400" data-i18n="card3_desc">Software hecho por artistas para artistas. Sin suscripciones ni cuotas ocultas.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 02: LIENZO DE DIBUJO INTERACTIVO -->
+            <section id="sec-lienzo" class="brutal-card p-5 sm:p-6 rounded">
+                <div class="flex items-center justify-between border-b-2 border-turqMid pb-3 mb-4">
+                    <div>
+                        <span class="text-xs text-turqBright font-bold uppercase tracking-wider">// SECTION_02</span>
+                        <h2 class="text-2xl font-grunge text-white tracking-wide" data-i18n="sec2_title">LIENZO INTERACTIVO KRITA-MINI</h2>
+                    </div>
+                    <i class="fa-solid fa-paintbrush text-turqBright text-xl"></i>
+                </div>
+
+                <!-- Canvas Control Bar -->
+                <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-darkcard2 rounded border border-turqMid mb-3 text-xs">
+                    <div class="flex items-center gap-2">
+                        <label data-i18n="canvas_color" class="font-bold text-gray-300">Color:</label>
+                        <input type="color" id="brushColor" value="#00a896" class="w-7 h-7 rounded cursor-pointer bg-transparent border-0">
+                        
+                        <label data-i18n="canvas_size" class="font-bold text-gray-300 ml-2">Grosor:</label>
+                        <input type="range" id="brushSize" min="1" max="40" value="5" class="w-20 accent-turqBright">
+                        <span id="brushSizeVal" class="text-turqBright font-mono w-5">5px</span>
+                    </div>
+
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                        <button onclick="setTool('brush')" id="btnToolBrush" class="brutal-btn px-2.5 py-1 text-xs rounded flex items-center gap-1">
+                            <i class="fa-solid fa-pen-nib"></i> <span data-i18n="tool_brush">Pincel</span>
+                        </button>
+                        <button onclick="setTool('eraser')" id="btnToolEraser" class="bg-darkcard text-gray-300 border border-gray-700 px-2.5 py-1 text-xs rounded hover:border-turqBright flex items-center gap-1">
+                            <i class="fa-solid fa-eraser"></i> <span data-i18n="tool_eraser">Goma</span>
+                        </button>
+                        <button onclick="stampHyena()" class="bg-darkcard text-turqBright border border-turqMid px-2.5 py-1 text-xs rounded hover:bg-turqDark hover:text-white flex items-center gap-1">
+                            <i class="fa-solid fa-stamp"></i> <span data-i18n="tool_stamp">Sello Hiena</span>
+                        </button>
+                        <button onclick="undoCanvas()" class="bg-darkcard text-gray-300 border border-gray-700 px-2 py-1 text-xs rounded hover:border-turqBright">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </button>
+                        <button onclick="clearCanvas()" class="bg-red-900/60 text-red-200 border border-red-700 px-2 py-1 text-xs rounded hover:bg-red-800">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                        <button onclick="downloadCanvas()" class="brutal-btn bg-turqBright text-black px-3 py-1 text-xs rounded flex items-center gap-1 ml-1">
+                            <i class="fa-solid fa-download"></i> <span data-i18n="canvas_download">Guardar</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Canvas Area -->
+                <div class="w-full bg-white rounded border-2 border-turqBright relative overflow-hidden shadow-inner h-[320px] sm:h-[380px]">
+                    <canvas id="drawingCanvas" class="w-full h-full block bg-white"></canvas>
+                    <div id="canvasNotice" class="absolute bottom-2 left-2 bg-darkcard/80 backdrop-blur text-[10px] text-turqBright px-2 py-1 rounded border border-turqMid pointer-events-none">
+                        <i class="fa-solid fa-pen-fancy"></i> <span data-i18n="canvas_hint">¡Dibuja aquí! Sello de Barnaby disponible</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 03: MARCOS PARA FOTOS Y DIBUJOS DIGITALES -->
+            <section id="sec-marcos" class="brutal-card p-5 sm:p-6 rounded">
+                <div class="flex items-center justify-between border-b-2 border-turqMid pb-3 mb-4">
+                    <div>
+                        <span class="text-xs text-turqBright font-bold uppercase tracking-wider">// SECTION_03</span>
+                        <h2 class="text-2xl font-grunge text-white tracking-wide" data-i18n="sec3_title">EXPOSICIÓN DE MARCOS GRUNGE</h2>
+                    </div>
+                    <label class="brutal-btn text-xs px-3 py-1.5 rounded cursor-pointer flex items-center gap-2">
+                        <i class="fa-solid fa-upload"></i> <span data-i18n="upload_btn">Subir Tu Dibujo</span>
+                        <input type="file" id="userArtUpload" accept="image/*" class="hidden" onchange="uploadUserArtwork(event)">
+                    </label>
+                </div>
+
+                <p class="text-xs text-gray-400 mb-4" data-i18n="sec3_desc">
+                    Sube tus propios dibujos desde tu dispositivo para enmarcarlos con la estética cyber-grunge y la aprobación oficial de la hiena.
+                </p>
+
+                <!-- Grid of Frames -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="galleryGrid">
+                    <!-- Frame 1: Default / Sample -->
+                    <div class="bg-darkcard2 p-3 rounded border-2 border-turqMid relative flex flex-col items-center">
+                        <div class="w-full h-44 bg-darkcard border border-dashed border-turqBright rounded overflow-hidden flex items-center justify-center p-2 relative">
+                            <svg viewBox="0 0 200 200" class="w-32 h-32 opacity-80">
+                                <circle cx="100" cy="100" r="80" fill="none" stroke="#00a896" stroke-width="4" stroke-dasharray="8 4"/>
+                                <path d="M 60 120 C 80 70, 120 70, 140 120" stroke="#ee9b00" stroke-width="6" fill="none"/>
+                                <circle cx="80" cy="85" r="8" fill="#ffeb3b"/>
+                                <circle cx="120" cy="85" r="8" fill="#ffeb3b"/>
+                            </svg>
+                        </div>
+                        <div class="w-full mt-2 flex items-center justify-between text-xs">
+                            <span class="text-turqBright font-bold" data-i18n="frame_1_title">Boceto #01: "Caos Creativo"</span>
+                            <span class="text-[10px] bg-turqDark px-1.5 py-0.5 rounded">GRUNGE</span>
+                        </div>
+                    </div>
+
+                    <!-- Frame 2: Default / Sample 2 -->
+                    <div class="bg-darkcard2 p-3 rounded border-2 border-turqMid relative flex flex-col items-center">
+                        <div class="w-full h-44 bg-darkcard border border-dashed border-turqBright rounded overflow-hidden flex items-center justify-center p-2 relative">
+                            <svg viewBox="0 0 200 200" class="w-32 h-32">
+                                <rect x="30" y="30" width="140" height="140" fill="none" stroke="#028090" stroke-width="5"/>
+                                <path d="M 40 160 L 90 90 L 120 130 L 160 70" stroke="#00a896" stroke-width="5" fill="none"/>
+                                <circle cx="150" cy="50" r="12" fill="#ee9b00"/>
+                            </svg>
+                        </div>
+                        <div class="w-full mt-2 flex items-center justify-between text-xs">
+                            <span class="text-turqBright font-bold" data-i18n="frame_2_title">Boceto #02: "Vector Neón"</span>
+                            <span class="text-[10px] bg-turqDark px-1.5 py-0.5 rounded">KRITA</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 04: DIAGNÓSTICO RECOMENDADOR DE APPS DE DIBUJO -->
+            <section id="sec-diagnostico" class="brutal-card p-5 sm:p-6 rounded">
+                <div class="flex items-center justify-between border-b-2 border-turqMid pb-3 mb-4">
+                    <div>
+                        <span class="text-xs text-turqBright font-bold uppercase tracking-wider">// SECTION_04</span>
+                        <h2 class="text-2xl font-grunge text-white tracking-wide" data-i18n="sec4_title">DIAGNÓSTICO: ¿QUÉ APP USAR?</h2>
+                    </div>
+                    <i class="fa-solid fa-robot text-turqBright text-xl"></i>
+                </div>
+
+                <!-- Quiz Container -->
+                <div class="bg-darkcard2 p-4 sm:p-5 rounded border border-turqMid relative">
+                    <!-- Quiz Mascot Header -->
+                    <div class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-800">
+                        <div class="w-12 h-12 flex-shrink-0">
+                            <svg viewBox="0 0 200 240" class="w-full h-full">
+                                <path d="M 40 90 C 20 50, 10 10, 65 30 C 60 60, 50 80, 55 95 Z" fill="#4a3328" stroke="#121214" stroke-width="4"/>
+                                <path d="M 160 90 C 180 50, 190 10, 135 30 C 140 60, 150 80, 145 95 Z" fill="#4a3328" stroke="#121214" stroke-width="4"/>
+                                <path d="M 45 95 C 45 140, 50 220, 50 240 L 150 240 C 150 220, 155 140, 155 95 C 130 85, 70 85, 45 95 Z" fill="#8ba168" stroke="#121214" stroke-width="5"/>
+                                <path d="M 50 78 C 50 42, 150 42, 150 78 C 120 92, 80 92, 50 78 Z" fill="#005f73" stroke="#121214" stroke-width="4"/>
+                                <circle cx="75" cy="65" r="5" fill="#ee9b00"/>
+                                <circle cx="120" cy="60" r="4" fill="#00a896"/>
+                                <circle cx="75" cy="115" r="11" fill="#ffeb3b" stroke="#121214" stroke-width="3" class="glow-eyes"/>
+                                <circle cx="125" cy="115" r="11" fill="#ffeb3b" stroke="#121214" stroke-width="3" class="glow-eyes"/>
+                                <path d="M 50 120 C 70 100, 130 100, 150 120 C 155 145, 45 145, 50 120 Z" fill="#2d221e" stroke="#121214" stroke-width="4"/>
+                                <path d="M 115 138 C 115 180, 145 180, 140 138 Z" fill="#e63946" stroke="#121214" stroke-width="3"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-xs text-turqBright font-bold uppercase" data-i18n="quiz_assistant">Asistente Barnaby</span>
+                            <p class="text-xs text-gray-300" id="quizBubble" data-i18n="quiz_intro_bubble">Responde 3 preguntas rápidas y te diré qué programa te conviene.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 1 -->
+                    <div id="quizStep1" class="space-y-3">
+                        <span class="text-xs text-turqBright font-bold" data-i18n="q1_title">PASO 1 DE 3: ¿Dónde vas a dibujar principalmente?</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <button onclick="answerQuiz(1, 'pc')" class="p-3 bg-darkcard border border-gray-700 hover:border-turqBright rounded text-left text-xs font-bold hover:bg-turqDark flex items-center gap-2">
+                                <i class="fa-solid fa-desktop text-turqBright text-base"></i>
+                                <span data-i18n="q1_opt1">PC / Laptop (Windows, Mac, Linux)</span>
+                            </button>
+                            <button onclick="answerQuiz(1, 'tablet')" class="p-3 bg-darkcard border border-gray-700 hover:border-turqBright rounded text-left text-xs font-bold hover:bg-turqDark flex items-center gap-2">
+                                <i class="fa-solid fa-tablet-screen-button text-turqBright text-base"></i>
+                                <span data-i18n="q1_opt2">Tableta (iPad, Android, Galaxy Tab)</span>
+                            </button>
+                            <button onclick="answerQuiz(1, 'mobile')" class="p-3 bg-darkcard border border-gray-700 hover:border-turqBright rounded text-left text-xs font-bold hover:bg-turqDark flex items-center gap-2">
+                                <i class="fa-solid fa-mobile-screen text-turqBright text-base"></i>
+                                <span data-i18n="q1_opt3">Teléfono Celular</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div id="quizStep2" class="space-y-3 hidden">
+                        <span class="text-xs text-turqBright font-bold" data-i18n="q2_title">PASO 2 DE 3: ¿Qué periférico o puntero usarás?</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <button onclick="answerQuiz(2, 'stylus')" class="p-3 bg-darkcard border border-gray-700 hover:border-turqBright rounded text-left text-xs font-bold hover:bg-turqDark flex items-center gap-2">
+                                <i class="fa-solid fa-pen-nib text-turqBright text-base"></i>
+                                <span data-i18n="q2_opt1">Lápiz Óptico / Stylus con presión</span>
+                            </button>
+                            <button onclick="answerQuiz(2, 'finger')" class="p-3 bg-darkcard border border-gray-700 hover:border-turqBright rounded text-left text-xs font-bold hover:bg-turqDark flex items-center gap-2">
+                                <i class="fa-solid fa-hand-pointer text-turqBright text-base"></i>
+                                <span data-i18n="q2_opt2">Dedo en pantalla táctil</span>
+                            </button>
+                            <button onclick="answerQuiz(2, 'mouse')" class="p-3 bg-darkcard border border-gray-700 hover:border-turqBright rounded text-left text-xs font-bold hover:bg-turqDark flex items-center gap-2">
+                                <i class="fa-solid fa-computer-mouse text-turqBright text-base"></i>
+                                <span data-i18n="q2_opt3">Ratón / Mouse estándar</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div id="quizStep3" class="space-y-3 hidden">
+                        <span class="text-xs text-turqBright font-bold" data-i18n="q3_title">PASO 3 DE 3: ¿Cuál es tu presupuesto para la app?</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <button onclick="answerQuiz(3, 'free')" class="p-3 bg-darkcard border border-gray-700 hover:border-turqBright rounded text-left text-xs font-bold hover:bg-turqDark flex items-center gap-2">
+                                <i class="fa-solid fa-gift text-turqBright text-base"></i>
+                                <span data-i18n="q3_opt1">100% Gratis / Software Libre</span>
+                            </button>
+                            <button onclick="answerQuiz(3, 'pay')" class="p-3 bg-darkcard border border-gray-700 hover:border-turqBright rounded text-left text-xs font-bold hover:bg-turqDark flex items-center gap-2">
+                                <i class="fa-solid fa-credit-card text-turqBright text-base"></i>
+                                <span data-i18n="q3_opt2">Puedo pagar pago único o suscripción</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Result Panel -->
+                    <div id="quizResult" class="hidden space-y-3 pt-2">
+                        <div class="bg-darkcard border-2 border-turqBright p-4 rounded text-xs space-y-2">
+                            <span class="text-[10px] text-turqBright uppercase font-bold tracking-widest">// RESULTADO_RECOMENDADO</span>
+                            <h3 id="resAppName" class="text-xl font-grunge text-white">KRITA STUDIO</h3>
+                            <p id="resAppDesc" class="text-gray-300 leading-relaxed">
+                                ¡Krita es la opción indiscutible para ti! Totalmente gratuito, de código abierto, con el mejor motor de pinceles e interfaz personalizable.
+                            </p>
+                            <div class="flex gap-2 pt-2">
+                                <a id="resAppBtn" href="https://krita.org" target="_blank" class="brutal-btn px-3 py-1.5 rounded inline-flex items-center gap-1.5">
+                                    <i class="fa-solid fa-up-right-from-square"></i> <span data-i18n="quiz_visit_site">Ir a la Web Oficial</span>
+                                </a>
+                                <button onclick="resetQuiz()" class="bg-darkcard border border-gray-700 text-gray-300 px-3 py-1.5 rounded hover:border-turqBright">
+                                    <i class="fa-solid fa-rotate"></i> <span data-i18n="quiz_repeat">Repetir Cuestionario</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 05: TABLA COMPARATIVA DE SOFTWARE DE DIBUJO -->
+            <section id="sec-comparativa" class="brutal-card p-5 sm:p-6 rounded">
+                <div class="flex items-center justify-between border-b-2 border-turqMid pb-3 mb-4">
+                    <div>
+                        <span class="text-xs text-turqBright font-bold uppercase tracking-wider">// SECTION_05</span>
+                        <h2 class="text-2xl font-grunge text-white tracking-wide" data-i18n="sec5_title">TABLA COMPARATIVA DE APPS</h2>
+                    </div>
+                    <i class="fa-solid fa-table text-turqBright text-xl"></i>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-darkcard2 border-b-2 border-turqMid text-turqBright">
+                                <th class="p-2.5 font-bold" data-i18n="th_software">Software</th>
+                                <th class="p-2.5 font-bold" data-i18n="th_price">Precio</th>
+                                <th class="p-2.5 font-bold" data-i18n="th_platforms">Plataformas</th>
+                                <th class="p-2.5 font-bold" data-i18n="th_brushes">Motor Pinceles</th>
+                                <th class="p-2.5 font-bold" data-i18n="th_animation">Animación 2D</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800 text-gray-300">
+                            <tr class="bg-darkcard hover:bg-turqDark/30">
+                                <td class="p-2.5 font-bold text-white flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-turqBright"></span> Krita
+                                </td>
+                                <td class="p-2.5 text-turqBright font-bold">100% Gratis (FOSS)</td>
+                                <td class="p-2.5">Win / Mac / Linux / Android</td>
+                                <td class="p-2.5">★★★★★ (Ultra Avanzado)</td>
+                                <td class="p-2.5 text-green-400">Sí (Nativo)</td>
+                            </tr>
+                            <tr class="hover:bg-turqDark/20">
+                                <td class="p-2.5 font-bold text-white">Clip Studio Paint</td>
+                                <td class="p-2.5 text-yellow-500">Pago / Suscripción</td>
+                                <td class="p-2.5">Win / Mac / iPad / Android</td>
+                                <td class="p-2.5">★★★★★ (Cómic / Manga)</td>
+                                <td class="p-2.5 text-green-400">Sí</td>
+                            </tr>
+                            <tr class="hover:bg-turqDark/20">
+                                <td class="p-2.5 font-bold text-white">Procreate</td>
+                                <td class="p-2.5 text-yellow-500">Pago Único (~13$)</td>
+                                <td class="p-2.5">Exclusivo iPad / iOS</td>
+                                <td class="p-2.5">★★★★☆ (Fluido)</td>
+                                <td class="p-2.5 text-yellow-400">Básico</td>
+                            </tr>
+                            <tr class="hover:bg-turqDark/20">
+                                <td class="p-2.5 font-bold text-white">IbisPaint X</td>
+                                <td class="p-2.5 text-green-400">Gratis / Anuncios</td>
+                                <td class="p-2.5">Android / iOS / Windows</td>
+                                <td class="p-2.5">★★★☆☆ (Social)</td>
+                                <td class="p-2.5 text-red-400">No</td>
+                            </tr>
+                            <tr class="hover:bg-turqDark/20">
+                                <td class="p-2.5 font-bold text-white">Paint Tool SAI</td>
+                                <td class="p-2.5 text-yellow-500">Pago Único (~50$)</td>
+                                <td class="p-2.5">Solo Windows</td>
+                                <td class="p-2.5">★★★★☆ (Mezcla Suave)</td>
+                                <td class="p-2.5 text-red-400">No</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Floating Accelerated Hold-to-Scroll Panel -->
+    <div class="fixed bottom-4 left-4 z-50 bg-darkcard brutal-border p-2 rounded shadow-brutal flex flex-col items-center gap-1 text-xs">
+        <span class="text-[9px] text-turqBright font-bold font-mono tracking-tighter" id="scrollSpeedDisplay">SPEED: 0px</span>
+        <button id="btnScrollUp" class="brutal-btn px-2.5 py-1 text-xs rounded w-full flex items-center justify-center gap-1" title="Mantén presionado para acelerar">
+            <i class="fa-solid fa-chevron-up"></i> <span data-i18n="scroll_up">▲ SUBIR</span>
+        </button>
+        <button id="btnScrollDown" class="brutal-btn px-2.5 py-1 text-xs rounded w-full flex items-center justify-center gap-1" title="Mantén presionado para acelerar">
+            <i class="fa-solid fa-chevron-down"></i> <span data-i18n="scroll_down">▼ BAJAR</span>
+        </button>
+    </div>
+
+    <!-- Floating Interactive Mascot Guide Bubble -->
+    <div class="fixed bottom-4 right-4 z-50 flex items-end gap-2 pointer-events-auto">
+        <!-- Dialogue Bubble -->
+        <div id="guideBubble" class="bg-darkcard brutal-border p-3 rounded-lg shadow-brutal max-w-[200px] text-[11px] text-gray-200 relative mb-2 hidden sm:block">
+            <div class="text-turqBright font-bold text-[10px] uppercase mb-1 flex items-center justify-between">
+                <span>BARNABY DIESEL</span>
+                <button onclick="toggleGuideBubble()" class="text-gray-500 hover:text-white">&times;</button>
+            </div>
+            <p id="guideBubbleContent">"¡Si el trazo no te sale a la primera, dile que es estilo abstracto!"</p>
+            <div class="absolute -right-2 bottom-3 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-l-8 border-l-turqBright"></div>
+        </div>
+
+        <!-- Mascot Button -->
+        <button onclick="triggerMascotJoke()" class="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 animate-hyena hover:scale-110 transition-transform cursor-pointer" title="¡Haz clic en la hiena para un consejo de arte!">
+            <svg viewBox="0 0 200 240" class="w-full h-full filter drop-shadow-lg">
+                <path d="M 40 90 C 20 50, 10 10, 65 30 C 60 60, 50 80, 55 95 Z" fill="#4a3328" stroke="#121214" stroke-width="4"/>
+                <path d="M 160 90 C 180 50, 190 10, 135 30 C 140 60, 150 80, 145 95 Z" fill="#4a3328" stroke="#121214" stroke-width="4"/>
+                <path d="M 45 95 C 45 140, 50 220, 50 240 L 150 240 C 150 220, 155 140, 155 95 C 130 85, 70 85, 45 95 Z" fill="#8ba168" stroke="#121214" stroke-width="5"/>
+                <path d="M 50 78 C 50 42, 150 42, 150 78 C 120 92, 80 92, 50 78 Z" fill="#005f73" stroke="#121214" stroke-width="4"/>
+                <circle cx="75" cy="65" r="5" fill="#ee9b00"/>
+                <circle cx="120" cy="60" r="4" fill="#00a896"/>
+                <circle cx="138" cy="70" r="3" fill="#e9d8a6"/>
+                <circle cx="95" cy="72" r="4.5" fill="#e63946"/>
+                <circle cx="75" cy="115" r="11" fill="#ffeb3b" stroke="#121214" stroke-width="3" class="glow-eyes"/>
+                <circle cx="125" cy="115" r="11" fill="#ffeb3b" stroke="#121214" stroke-width="3" class="glow-eyes"/>
+                <path d="M 50 120 C 70 100, 130 100, 150 120 C 155 145, 45 145, 50 120 Z" fill="#2d221e" stroke="#121214" stroke-width="4"/>
+                <path d="M 115 138 C 115 180, 145 180, 140 138 Z" fill="#e63946" stroke="#121214" stroke-width="3"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="w-full max-w-[920px] mt-16 px-4 pt-6 pb-12 border-t-2 border-turqMid text-center text-xs text-gray-500">
+        <div class="flex flex-col items-center justify-center gap-3">
+            <!-- Sleeping / Smiling Mascot Footer Graphic -->
+            <div class="w-16 h-16 opacity-80">
+                <svg viewBox="0 0 200 240" class="w-full h-full">
+                    <path d="M 40 90 C 20 50, 10 10, 65 30 Z" fill="#4a3328"/>
+                    <path d="M 160 90 C 180 50, 190 10, 135 30 Z" fill="#4a3328"/>
+                    <path d="M 45 95 C 45 140, 50 220, 50 240 L 150 240 L 155 95 Z" fill="#8ba168"/>
+                    <path d="M 50 78 C 50 42, 150 42, 150 78 Z" fill="#005f73"/>
+                    <circle cx="75" cy="115" r="9" fill="#ffeb3b"/>
+                    <circle cx="125" cy="115" r="9" fill="#ffeb3b"/>
+                    <path d="M 115 138 C 115 170, 140 170, 138 138 Z" fill="#e63946"/>
+                </svg>
+            </div>
+            <p data-i18n="footer_credits">
+                Guía de Arte Digital inspirada en la comunidad libre de Krita.org • Creado con estética Neubrutalist / Cyber-Grunge
+            </p>
+            <p class="text-[10px] text-turqBright font-mono">
+                © 2026 Barnaby The Painter Hyena • Free & Open Source Spirit
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        const i18nData = {
+            es: {
+                nav_start: "INICIO",
+                nav_canvas: "LIENZO",
+                nav_frames: "MARCOS",
+                nav_quiz: "DIAGNÓSTICO",
+                nav_compare: "COMPARATIVA",
+                hud_tip_title: "CONSEJO HIENA",
+                sec1_title: "empieza ya¡¡ - MANIFIESTO ARTÍSTICO",
+                sec1_mascot_intro: "¡Hola! Soy Barnaby, la Hiena Pintora Tonta y Tierna",
+                sec1_mascot_desc: "No necesitas una tableta gráfica de 1000 dólares ni un título universitario para crear arte asombroso. El arte digital libre te permite equivocarte sin gastar papel, experimentar con capas infinitas y encontrar tu propio estilo con Krita y herramientas abiertas.",
+                card1_title: "1. Libertad de Pincel",
+                card1_desc: "Aprende los motores de pinceles dinámicos, estabilizadores y texturas únicas de Krita.",
+                card2_title: "2. Flujo de Capas",
+                card2_desc: "Domina modos de fusión, máscaras de recorte y filtros no destructivos.",
+                card3_title: "3. 100% Gratuito",
+                card3_desc: "Software hecho por artistas para artistas. Sin suscripciones ni cuotas ocultas.",
+                sec2_title: "LIENZO INTERACTIVO KRITA-MINI",
+                canvas_color: "Color:",
+                canvas_size: "Grosor:",
+                tool_brush: "Pincel",
+                tool_eraser: "Goma",
+                tool_stamp: "Sello Hiena",
+                canvas_download: "Guardar",
+                canvas_hint: "¡Dibuja aquí! Sello de Barnaby disponible",
+                sec3_title: "EXPOSICIÓN DE MARCOS GRUNGE",
+                upload_btn: "Subir Tu Dibujo",
+                sec3_desc: "Sube tus propios dibujos desde tu dispositivo para enmarcarlos con la estética cyber-grunge y la aprobación oficial de la hiena.",
+                frame_1_title: "Boceto #01: \"Caos Creativo\"",
+                frame_2_title: "Boceto #02: \"Vector Neón\"",
+                sec4_title: "DIAGNÓSTICO: ¿QUÉ APP USAR?",
+                quiz_assistant: "Asistente Barnaby",
+                quiz_intro_bubble: "Responde 3 preguntas rápidas y te diré qué programa te conviene.",
+                q1_title: "PASO 1 DE 3: ¿Dónde vas a dibujar principalmente?",
+                q1_opt1: "PC / Laptop (Windows, Mac, Linux)",
+                q1_opt2: "Tableta (iPad, Android, Galaxy Tab)",
+                q1_opt3: "Teléfono Celular",
+                q2_title: "PASO 2 DE 3: ¿Qué periférico o puntero usarás?",
+                q2_opt1: "Lápiz Óptico / Stylus con presión",
+                q2_opt2: "Dedo en pantalla táctil",
+                q2_opt3: "Ratón / Mouse estándar",
+                q3_title: "PASO 3 DE 3: ¿Cuál es tu presupuesto para la app?",
+                q3_opt1: "100% Gratis / Software Libre",
+                q3_opt2: "Puedo pagar pago único o suscripción",
+                quiz_visit_site: "Ir a la Web Oficial",
+                quiz_repeat: "Repetir Cuestionario",
+                sec5_title: "TABLA COMPARATIVA DE APPS",
+                th_software: "Software",
+                th_price: "Precio",
+                th_platforms: "Plataformas",
+                th_brushes: "Motor Pinceles",
+                th_animation: "Animación 2D",
+                scroll_up: "▲ SUBIR",
+                scroll_down: "▼ BAJAR",
+                footer_credits: "Guía de Arte Digital inspirada en la comunidad libre de Krita.org • Creado con estética Neubrutalist / Cyber-Grunge"
+            },
+            en: {
+                nav_start: "START",
+                nav_canvas: "CANVAS",
+                nav_frames: "FRAMES",
+                nav_quiz: "DIAGNOSTIC",
+                nav_compare: "COMPARE",
+                hud_tip_title: "HYENA TIP",
+                sec1_title: "start now!! - ART MANIFESTO",
+                sec1_mascot_intro: "Hi! I'm Barnaby, the Silly & Cute Painter Hyena",
+                sec1_mascot_desc: "You don't need a $1000 tablet or a college degree to make incredible art. Open-source digital art lets you fail without wasting paper, experiment with infinite layers, and find your style.",
+                card1_title: "1. Brush Freedom",
+                card1_desc: "Learn Krita's dynamic brush engines, stabilizers, and unique textures.",
+                card2_title: "2. Layer Workflow",
+                card2_desc: "Master blending modes, clipping masks, and non-destructive filters.",
+                card3_title: "3. 100% Free",
+                card3_desc: "Software made by artists for artists. No hidden subscriptions.",
+                sec2_title: "MINI KRITA INTERACTIVE CANVAS",
+                canvas_color: "Color:",
+                canvas_size: "Size:",
+                tool_brush: "Brush",
+                tool_eraser: "Eraser",
+                tool_stamp: "Hyena Stamp",
+                canvas_download: "Save",
+                canvas_hint: "Draw here! Barnaby stamp available",
+                sec3_title: "GRUNGE FRAME GALLERY",
+                upload_btn: "Upload Your Art",
+                sec3_desc: "Upload your own drawings from your device to display them in cyber-grunge frames with the hyena's seal of approval.",
+                frame_1_title: "Sketch #01: \"Creative Chaos\"",
+                frame_2_title: "Sketch #02: \"Neon Vector\"",
+                sec4_title: "DIAGNOSTIC: WHICH APP TO USE?",
+                quiz_assistant: "Barnaby Assistant",
+                quiz_intro_bubble: "Answer 3 quick questions and I'll tell you which software fits best.",
+                q1_title: "STEP 1 OF 3: Where will you draw primarily?",
+                q1_opt1: "PC / Laptop (Windows, Mac, Linux)",
+                q1_opt2: "Tablet (iPad, Android, Galaxy Tab)",
+                q1_opt3: "Mobile Phone",
+                q2_title: "STEP 2 OF 3: What input device will you use?",
+                q2_opt1: "Pressure Stylus / Pen",
+                q2_opt2: "Finger on touchscreen",
+                q2_opt3: "Standard Mouse",
+                q3_title: "STEP 3 OF 3: What is your budget?",
+                q3_opt1: "100% Free / Open Source",
+                q3_opt2: "Willing to pay one-time or subscription",
+                quiz_visit_site: "Go to Official Site",
+                quiz_repeat: "Repeat Quiz",
+                sec5_title: "APP COMPARISON MATRIX",
+                th_software: "Software",
+                th_price: "Price",
+                th_platforms: "Platforms",
+                th_brushes: "Brush Engine",
+                th_animation: "2D Animation",
+                scroll_up: "▲ UP",
+                scroll_down: "▼ DOWN",
+                footer_credits: "Digital Art Guide inspired by the Krita.org open community • Built with Neubrutalist / Cyber-Grunge aesthetics"
+            },
+            ja: {
+                nav_start: "スタート",
+                nav_canvas: "キャンバス",
+                nav_frames: "フレーム",
+                nav_quiz: "診断",
+                nav_compare: "比較",
+                hud_tip_title: "ハイエナのヒント",
+                sec1_title: "今すぐ始めよう！！ - アートマニフェスト",
+                sec1_mascot_intro: "こんにちは！画家のハイエナ、バーナビーです！",
+                sec1_mascot_desc: "高価なタブレットや学位は必要ありません。Kritaとオープンソースツールで自由にお絵描きを楽しもう！",
+                card1_title: "1. ブラシの自由",
+                card1_desc: "Kritaの強力なブラシエンジンと手ブレ補正をマスター。",
+                card2_title: "2. レイヤーの活用",
+                card2_desc: "合成モードとクリッピングマスクで表現の幅を広げよう。",
+                card3_title: "3. 完全無料",
+                card3_desc: "アーティストのために作られたオープンソースソフト。",
+                sec2_title: "インタラクティブ・ミニキャンバス",
+                canvas_color: "色:",
+                canvas_size: "太さ:",
+                tool_brush: "ブラシ",
+                tool_eraser: "消しゴム",
+                tool_stamp: "スタンプ",
+                canvas_download: "保存",
+                canvas_hint: "ここで描こう！バーナビースタンプ付き",
+                sec3_title: "グランジフレームギャラリー",
+                upload_btn: "作品をアップロード",
+                sec3_desc: "あなたのデジタルイラストをアップロードして展示しよう！",
+                frame_1_title: "スケッチ #01: 「クリエイティブカオス」",
+                frame_2_title: "スケッチ #02: 「ネオンベクター」",
+                sec4_title: "アプリ診断: どれを使う？",
+                quiz_assistant: "バーナビー助手",
+                quiz_intro_bubble: "3つの質問に答えるだけで、おすすめのアプリを提案するよ！",
+                q1_title: "ステップ 1/3: どこで描きますか？",
+                q1_opt1: "PC / ノートPC",
+                q1_opt2: "タブレット (iPad/Android)",
+                q1_opt3: "スマートフォン",
+                q2_title: "ステップ 2/3: 何を使って描きますか？",
+                q2_opt1: "スタイラスペン / タッチペン",
+                q2_opt2: "指",
+                q2_opt3: "マウス",
+                q3_title: "ステップ 3/3: 予算は？",
+                q3_opt1: "完全無料 / オープンソース",
+                q3_opt2: "有料アプリも検討可",
+                quiz_visit_site: "公式サイトへ",
+                quiz_repeat: "診断をやり直す",
+                sec5_title: "お絵描きアプリ比較表",
+                th_software: "ソフト名",
+                th_price: "価格",
+                th_platforms: "対応OS",
+                th_brushes: "ブラシ性能",
+                th_animation: "2Dアニメ機能",
+                scroll_up: "▲ 上へ",
+                scroll_down: "▼ 下へ",
+                footer_credits: "Krita.org コミュニティにインスパイアされたデジタルアートガイド"
+            },
+            fr: {
+                nav_start: "ACCUEIL",
+                nav_canvas: "TOILE",
+                nav_frames: "CADRES",
+                nav_quiz: "DIAGNOSTIC",
+                nav_compare: "COMPARATIF",
+                hud_tip_title: "CONSEIL HYÈNE",
+                sec1_title: "commencez dès maintenant!! - MANIFESTE",
+                sec1_mascot_intro: "Salut! Je suis Barnaby, l'hyène peintre loufoque et mignonne",
+                sec1_mascot_desc: "Pas besoin d'une tablette à 1000$ pour créer un art incroyable. L'art numérique libre vous permet d'expérimenter sans limites.",
+                card1_title: "1. Liberté de Pinceau",
+                card1_desc: "Découvrez les moteurs de pinceaux dynamiques et stabilisateurs de Krita.",
+                card2_title: "2. Flux de Calques",
+                card2_desc: "Maîtrisez les modes de fusion et les masques de écrêtage.",
+                card3_title: "3. 100% Gratuit",
+                card3_desc: "Logiciel fait par des artistes pour des artistes. Sans abonnement.",
+                sec2_title: "TOILE INTERACTIVE MINI-KRITA",
+                canvas_color: "Couleur:",
+                canvas_size: "Taille:",
+                tool_brush: "Pinceau",
+                tool_eraser: "Gomme",
+                tool_stamp: "Sceau Hyène",
+                canvas_download: "Sauvegarder",
+                canvas_hint: "Dessinez ici! Sceau de Barnaby disponible",
+                sec3_title: "GALERIE DE CADRES GRUNGE",
+                upload_btn: "Publier Votre Dessin",
+                sec3_desc: "Téléchargez vos propres dessins pour les exposer dans des cadres style cyber-grunge.",
+                frame_1_title: "Esquisse #01: \"Chaos Créatif\"",
+                frame_2_title: "Esquisse #02: \"Vecteur Néo\"",
+                sec4_title: "DIAGNOSTIC: QUELLE APPLICATION?",
+                quiz_assistant: "Assistant Barnaby",
+                quiz_intro_bubble: "Répondez à 3 questions rapides pour trouver l'outil idéal.",
+                q1_title: "ÉTAPE 1 SUR 3: Où allez-vous dessiner?",
+                q1_opt1: "PC / Ordinateur Portable",
+                q1_opt2: "Tablette (iPad, Android)",
+                q1_opt3: "Téléphone Mobile",
+                q2_title: "ÉTAPE 2 SUR 3: Quel outil d'entrée?",
+                q2_opt1: "Stylet à pression",
+                q2_opt2: "Doigt",
+                q2_opt3: "Souris standard",
+                q3_title: "ÉTAPE 3 SUR 3: Votre budget?",
+                q3_opt1: "100% Gratuit / Open Source",
+                q3_opt2: "Prêt à payer",
+                quiz_visit_site: "Visiter le site officiel",
+                quiz_repeat: "Répéter le test",
+                sec5_title: "TABLEAU COMPARATIF",
+                th_software: "Logiciel",
+                th_price: "Prix",
+                th_platforms: "Plateformes",
+                th_brushes: "Moteur Pinceaux",
+                th_animation: "Animation 2D",
+                scroll_up: "▲ HAUT",
+                scroll_down: "▼ BAS",
+                footer_credits: "Guide d'Art Numérique inspiré par la communauté libre de Krita.org"
+            },
+            pt: {
+                nav_start: "INÍCIO",
+                nav_canvas: "TELA",
+                nav_frames: "QUADROS",
+                nav_quiz: "DIAGNÓSTICO",
+                nav_compare: "COMPARATIVO",
+                hud_tip_title: "DICA DA HIENA",
+                sec1_title: "comece já!! - MANIFESTO ARTÍSTICO",
+                sec1_mascot_intro: "Olá! Sou Barnaby, a Hiena Pintora Boba e Fofa",
+                sec1_mascot_desc: "Você não precisa de uma mesa digitalizadora caríssima para criar arte incrível. O arte digital livre te permite errar e experimentar com Krita.",
+                card1_title: "1. Liberdade de Pincel",
+                card1_desc: "Aprenda os motores de pincéis dinâmicos e estabilizadores do Krita.",
+                card2_title: "2. Fluxo de Camadas",
+                card2_desc: "Domine modos de mesclagem e máskaras de corte.",
+                card3_title: "3. 100% Grátis",
+                card3_desc: "Software feito por artistas para artistas. Sem mensalidades.",
+                sec2_title: "TELA INTERATIVA MINI-KRITA",
+                canvas_color: "Cor:",
+                canvas_size: "Espessura:",
+                tool_brush: "Pincel",
+                tool_eraser: "Borracha",
+                tool_stamp: "Selo Hiena",
+                canvas_download: "Salvar",
+                canvas_hint: "Desenhe aqui! Carimbo do Barnaby disponível",
+                sec3_title: "GALERIA DE QUADROS GRUNGE",
+                upload_btn: "Enviar Seu Desenho",
+                sec3_desc: "Faça upload dos seus próprios desenhos para emoldurá-los com o estilo cyber-grunge.",
+                frame_1_title: "Esboço #01: \"Caos Criativo\"",
+                frame_2_title: "Esboço #02: \"Vetor Neon\"",
+                sec4_title: "DIAGNÓSTICO: QUAL APP USAR?",
+                quiz_assistant: "Assistente Barnaby",
+                quiz_intro_bubble: "Responda 3 perguntas rápidas e indicarei o programa ideal.",
+                q1_title: "PASSO 1 DE 3: Onde você vai desenhar?",
+                q1_opt1: "PC / Notebook (Windows, Mac, Linux)",
+                q1_opt2: "Tablet (iPad, Android)",
+                q1_opt3: "Celular",
+                q2_title: "PASSO 2 DE 3: Qual dispositivo de entrada?",
+                q2_opt1: "Caneta Digital / Stylus",
+                q2_opt2: "Dedo na tela",
+                q2_opt3: "Mouse padrão",
+                q3_title: "PASSO 3 DE 3: Qual seu orçamento?",
+                q3_opt1: "100% Grátis / Código Aberto",
+                q3_opt2: "Posso pagar um valor",
+                quiz_visit_site: "Ir para Site Oficial",
+                quiz_repeat: "Repetir Teste",
+                sec5_title: "TABELA COMPARATIVA DE APPS",
+                th_software: "Software",
+                th_price: "Preço",
+                th_platforms: "Plataformas",
+                th_brushes: "Motor Pincéis",
+                th_animation: "Animação 2D",
+                scroll_up: "▲ SUBIR",
+                scroll_down: "▼ DESCER",
+                footer_credits: "Guia de Arte Digital inspirado na comunidade Krita.org"
+            }
+        };
+
+        let currentLang = 'es';
+
+        function changeLanguage(langKey) {
+            if (!i18nData[langKey]) return;
+            currentLang = langKey;
+            
+            // Translate elements with data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18nData[langKey][key]) {
+                    el.textContent = i18nData[langKey][key];
+                }
+            });
+        }
+
+        let scrollInterval = null;
+        let currentScrollSpeed = 0;
+        const MIN_SPEED = 6;
+        const MAX_SPEED = 80;
+        const ACCELERATION = 2.5;
+
+        const speedDisplay = document.getElementById('scrollSpeedDisplay');
+
+        function startAcceleratedScroll(direction) {
+            stopAcceleratedScroll();
+            currentScrollSpeed = MIN_SPEED;
+            
+            function step() {
+                window.scrollBy({
+                    top: direction * currentScrollSpeed,
+                    behavior: 'instant'
+                });
+                
+                // Accelerate
+                if (currentScrollSpeed < MAX_SPEED) {
+                    currentScrollSpeed += ACCELERATION;
+                }
+                speedDisplay.textContent = `SPEED: ${Math.round(currentScrollSpeed)}px`;
+                scrollInterval = requestAnimationFrame(step);
+            }
+            scrollInterval = requestAnimationFrame(step);
+        }
+
+        function stopAcceleratedScroll() {
+            if (scrollInterval) {
+                cancelAnimationFrame(scrollInterval);
+                scrollInterval = null;
+            }
+            currentScrollSpeed = 0;
+            speedDisplay.textContent = `SPEED: 0px`;
+        }
+
+        const btnUp = document.getElementById('btnScrollUp');
+        const btnDown = document.getElementById('btnScrollDown');
+
+        // Events for UP
+        btnUp.addEventListener('mousedown', () => startAcceleratedScroll(-1));
+        btnUp.addEventListener('touchstart', (e) => { e.preventDefault(); startAcceleratedScroll(-1); });
+        btnUp.addEventListener('mouseup', stopAcceleratedScroll);
+        btnUp.addEventListener('mouseleave', stopAcceleratedScroll);
+        btnUp.addEventListener('touchend', stopAcceleratedScroll);
+
+        // Events for DOWN
+        btnDown.addEventListener('mousedown', () => startAcceleratedScroll(1));
+        btnDown.addEventListener('touchstart', (e) => { e.preventDefault(); startAcceleratedScroll(1); });
+        btnDown.addEventListener('mouseup', stopAcceleratedScroll);
+        btnDown.addEventListener('mouseleave', stopAcceleratedScroll);
+        btnDown.addEventListener('touchend', stopAcceleratedScroll);
+
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let currentTool = 'brush';
+        let strokeHistory = [];
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            // Save contents
+            const tempImg = new Image();
+            tempImg.src = canvas.toDataURL();
+            
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            
+            tempImg.onload = () => {
+                ctx.drawImage(tempImg, 0, 0);
+            };
+        }
+
+        window.addEventListener('load', () => {
+            resizeCanvas();
+            saveCanvasState();
+        });
+        window.addEventListener('resize', resizeCanvas);
+
+        function saveCanvasState() {
+            if (strokeHistory.length > 15) strokeHistory.shift();
+            strokeHistory.push(canvas.toDataURL());
+        }
+
+        function undoCanvas() {
+            if (strokeHistory.length > 1) {
+                strokeHistory.pop(); // Current
+                const previous = strokeHistory[strokeHistory.length - 1];
+                const img = new Image();
+                img.src = previous;
+                img.onload = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0);
+                };
+            } else if (strokeHistory.length === 1) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            saveCanvasState();
+        }
+
+        function setTool(tool) {
+            currentTool = tool;
+            const btnB = document.getElementById('btnToolBrush');
+            const btnE = document.getElementById('btnToolEraser');
+            
+            if (tool === 'brush') {
+                btnB.className = "brutal-btn px-2.5 py-1 text-xs rounded flex items-center gap-1";
+                btnE.className = "bg-darkcard text-gray-300 border border-gray-700 px-2.5 py-1 text-xs rounded hover:border-turqBright flex items-center gap-1";
+            } else {
+                btnE.className = "brutal-btn px-2.5 py-1 text-xs rounded flex items-center gap-1 bg-red-800 border-red-500";
+                btnB.className = "bg-darkcard text-gray-300 border border-gray-700 px-2.5 py-1 text-xs rounded hover:border-turqBright flex items-center gap-1";
+            }
+        }
+
+        // Drawing Event Handlers
+        const brushColor = document.getElementById('brushColor');
+        const brushSize = document.getElementById('brushSize');
+        const brushSizeVal = document.getElementById('brushSizeVal');
+
+        brushSize.addEventListener('input', (e) => {
+            brushSizeVal.textContent = `${e.target.value}px`;
+        });
+
+        function getCanvasCoords(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            const pos = getCanvasCoords(e);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            e.preventDefault();
+            const pos = getCanvasCoords(e);
+            
+            ctx.lineWidth = brushSize.value;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            if (currentTool === 'eraser') {
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.strokeStyle = 'rgba(0,0,0,1)';
+            } else {
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.strokeStyle = brushColor.value;
+            }
+
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+        }
+
+        function stopDrawing() {
+            if (isDrawing) {
+                isDrawing = false;
+                ctx.beginPath();
+                saveCanvasState();
+            }
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseleave', stopDrawing);
+
+        canvas.addEventListener('touchstart', startDrawing);
+        canvas.addEventListener('touchmove', draw);
+        canvas.addEventListener('touchend', stopDrawing);
+
+        function stampHyena() {
+            // Draws stamp seal of hyena in center or corner
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.save();
+            ctx.translate(cx - 40, cy - 40);
+            
+            // Draw cute hyena face stamp
+            ctx.fillStyle = "#8ba168";
+            ctx.beginPath();
+            ctx.arc(40, 40, 30, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = "#121214";
+            ctx.stroke();
+
+            // Beret
+            ctx.fillStyle = "#005f73";
+            ctx.beginPath();
+            ctx.ellipse(40, 20, 25, 10, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // Eyes
+            ctx.fillStyle = "#ffeb3b";
+            ctx.beginPath();
+            ctx.arc(30, 38, 5, 0, Math.PI * 2);
+            ctx.arc(50, 38, 5, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Tongue
+            ctx.fillStyle = "#e63946";
+            ctx.beginPath();
+            ctx.arc(48, 52, 6, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+            saveCanvasState();
+        }
+
+        function downloadCanvas() {
+            // Create temporary canvas to add background and watermark signature
+            const exportCanvas = document.createElement('canvas');
+            exportCanvas.width = canvas.width;
+            exportCanvas.height = canvas.height;
+            const eCtx = exportCanvas.getContext('2d');
+            
+            // White bg
+            eCtx.fillStyle = "#ffffff";
+            eCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+            // Draw user art
+            eCtx.drawImage(canvas, 0, 0);
+            
+            // Add Hyena Watermark Text
+            eCtx.font = "bold 12px 'Courier New', monospace";
+            eCtx.fillStyle = "#005f73";
+            eCtx.fillText("★ Barnaby Hyena Certified Art • Krita-Mini", 10, exportCanvas.height - 10);
+
+            const link = document.createElement('a');
+            link.download = 'barnaby_hyena_artwork.png';
+            link.href = exportCanvas.toDataURL();
+            link.click();
+        }
+
+        function uploadUserArtwork(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const galleryGrid = document.getElementById('galleryGrid');
+                
+                const newFrame = document.createElement('div');
+                newFrame.className = "bg-darkcard2 p-3 rounded border-2 border-turqBright relative flex flex-col items-center animate-fade-in";
+                newFrame.innerHTML = `
+                    <div class="w-full h-44 bg-darkcard border border-dashed border-turqBright rounded overflow-hidden flex items-center justify-center p-1 relative">
+                        <img src="${e.target.result}" class="w-full h-full object-contain rounded" alt="User Art">
+                        <div class="absolute top-2 right-2 bg-turqBright text-black font-bold text-[9px] px-1.5 py-0.5 rounded shadow">
+                            BARNABY APPROVED
+                        </div>
+                    </div>
+                    <div class="w-full mt-2 flex items-center justify-between text-xs">
+                        <span class="text-white font-bold truncate max-w-[160px]">${file.name}</span>
+                        <span class="text-[10px] bg-turqMid px-1.5 py-0.5 rounded text-white">USUARIO</span>
+                    </div>
+                `;
+                
+                galleryGrid.prepend(newFrame);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        const quizAnswers = {
+            device: '',
+            tool: '',
+            budget: ''
+        };
+
+        function answerQuiz(step, val) {
+            if (step === 1) {
+                quizAnswers.device = val;
+                document.getElementById('quizStep1').classList.add('hidden');
+                document.getElementById('quizStep2').classList.remove('hidden');
+            } else if (step === 2) {
+                quizAnswers.tool = val;
+                document.getElementById('quizStep2').classList.add('hidden');
+                document.getElementById('quizStep3').classList.remove('hidden');
+            } else if (step === 3) {
+                quizAnswers.budget = val;
+                document.getElementById('quizStep3').classList.add('hidden');
+                calculateQuizResult();
+            }
+        }
+
+        function calculateQuizResult() {
+            const resPanel = document.getElementById('quizResult');
+            const nameEl = document.getElementById('resAppName');
+            const descEl = document.getElementById('resAppDesc');
+            const btnEl = document.getElementById('resAppBtn');
+            resPanel.classList.remove('hidden');
+
+            const { device, tool, budget } = quizAnswers;
+
+            if (device === 'pc' || budget === 'free') {
+                nameEl.textContent = "KRITA STUDIO (Recomendado Nº1)";
+                descEl.textContent = "¡Krita es la opción indiscutible para ti! Totalmente gratuito, de código abierto, con motor de pinceles profesional, estabilizadores y animación 2D.";
+                btnEl.href = "https://krita.org";
+            } else if (device === 'tablet' && tool === 'stylus' && budget === 'pay') {
+                nameEl.textContent = "PROCREATE / CLIP STUDIO PAINT";
+                descEl.textContent = "Si usas iPad o Galaxy Tab con lápiz táctil y presupuesto, Procreate y Clip Studio ofrecen una fluidez excelente con herramientas avanzadas.";
+                btnEl.href = "https://procreate.com";
+            } else if (device === 'mobile' || tool === 'finger') {
+                nameEl.textContent = "IBISPAINT X / SKETCHBOOK";
+                descEl.textContent = "Para pantallas táctiles compactas y dibujo con dedo o stylus rápido, IbisPaint X y Sketchbook ofrecen una interfaz adaptada e intuitiva.";
+                btnEl.href = "https://ibispaint.com";
+            } else {
+                nameEl.textContent = "KRITA STUDIO";
+                descEl.textContent = "Krita se adapta a casi cualquier flujo creativo con cero costo. ¡Pruébalo libremente!";
+                btnEl.href = "https://krita.org";
+            }
+        }
+
+        function resetQuiz() {
+            quizAnswers.device = '';
+            quizAnswers.tool = '';
+            quizAnswers.budget = '';
+            document.getElementById('quizResult').classList.add('hidden');
+            document.getElementById('quizStep3').classList.add('hidden');
+            document.getElementById('quizStep2').classList.add('hidden');
+            document.getElementById('quizStep1').classList.remove('hidden');
+        }
+
+        const hyenaJokes = [
+            "\"¡El CTRL+Z es el mejor amigo del artista, pero mi gorrito de pintor me da +50 de inspiración!\"",
+            "\"¿Sabías que Krita es 100% libre? Nadie te va a cobrar por dibujar un gatito con 8 patas.\"",
+            "\"Si el dibujo parece raro, di que es neubrutalismo abstracto y te darán un premio.\"",
+            "\"Barnaby aprueba tus trazos. ¡Sigue dibujando sin miedo!\"",
+            "\"Recuerda guardar tu archivo a menudo... ¡no dejes que los fantasmas del sistema se coman tu obra!\""
+        ];
+
+        function triggerMascotJoke() {
+            const bubble = document.getElementById('guideBubble');
+            const content = document.getElementById('guideBubbleContent');
+            const randomIndex = Math.floor(Math.random() * hyenaJokes.length);
+            
+            content.textContent = hyenaJokes[randomIndex];
+            bubble.classList.remove('hidden');
+        }
+
+        function toggleGuideBubble() {
+            document.getElementById('guideBubble').classList.add('hidden');
+        }
+
+        // Active HUD Section Scroll Detector
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.hud-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
